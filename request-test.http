@@ -1,0 +1,23 @@
+
+###
+POST /api/v1/wallets/create
+Host: localhost:9000
+
+###
+GET /api/v1/wallets/626600fc-6596-4064-875b-b86b2309c925
+Host: localhost:9000
+
+###
+POST /api/v1/operations/perform
+Host: localhost:9000
+Content-Type: application/json
+
+{
+    "walletId": "626600fc-6596-4064-875b-b86b2309c925",
+    "amount": 3000,
+    "operationType": "DEPOSIT"
+}
+
+###
+GET /api/v1/operations/by-wallet?walletId=626600fc-6596-4064-875b-b86b2309c925
+Host: localhost:9000
