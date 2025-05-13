@@ -2,7 +2,6 @@ package org.burgas.walletservice.service;
 
 import org.burgas.walletservice.dto.OperationRequest;
 import org.burgas.walletservice.dto.OperationResponse;
-import org.burgas.walletservice.entity.Operation;
 import org.burgas.walletservice.exception.NotEnoughMoneyException;
 import org.burgas.walletservice.exception.WalletNotFoundException;
 import org.burgas.walletservice.exception.WrongOperationMoneyAmount;
