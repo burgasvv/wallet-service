@@ -1,10 +1,13 @@
 package org.burgas.walletservice.service;
 
+import org.burgas.walletservice.dto.OperationRequest;
+import org.burgas.walletservice.dto.OperationResponse;
 import org.burgas.walletservice.entity.Operation;
 import org.burgas.walletservice.exception.NotEnoughMoneyException;
 import org.burgas.walletservice.exception.WalletNotFoundException;
 import org.burgas.walletservice.exception.WrongOperationMoneyAmount;
 import org.burgas.walletservice.log.WalletLogs;
+import org.burgas.walletservice.mapper.OperationMapper;
 import org.burgas.walletservice.repository.OperationRepository;
 import org.burgas.walletservice.repository.WalletRepository;
 import org.slf4j.Logger;
@@ -31,17 +34,20 @@ public class OperationService {
 
     private static final Logger log = LoggerFactory.getLogger(OperationService.class);
     private final OperationRepository operationRepository;
+    private final OperationMapper operationMapper;
     private final WalletRepository walletRepository;
 
-    public OperationService(OperationRepository operationRepository, WalletRepository walletRepository) {
+    public OperationService(OperationRepository operationRepository, OperationMapper operationMapper, WalletRepository walletRepository) {
         this.operationRepository = operationRepository;
+        this.operationMapper = operationMapper;
         this.walletRepository = walletRepository;
     }
 
-    public List<Operation> findByWalletId(final UUID walletId) {
+    public List<OperationResponse> findByWalletId(final UUID walletId) {
         return this.operationRepository.findOperationsByWalletId(walletId)
                 .stream()
                 .peek(operation -> log.info(OPERATION_FOUND_BY_WALLET_ID.getLog(), operation))
+                .map(this.operationMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -49,31 +55,31 @@ public class OperationService {
             isolation = SERIALIZABLE, propagation = REQUIRED,
             rollbackFor = Exception.class
     )
-    public String performOperation(final Operation operation) {
-        return this.walletRepository.findById(operation.getWalletId())
+    public String performOperation(final OperationRequest operationRequest) {
+        return this.walletRepository.findById(operationRequest.getWalletId())
                 .stream()
                 .peek(wallet -> log.info(WALLET_FOUND_BEFORE_PERFORM_OPERATION.getLog(), wallet))
                 .map(
                         wallet -> {
-                            if (operation.getAmount() <= 0) {
-                                log.info(WalletLogs.WRONG_AMOUNT_VALUE.getLog(), operation.getAmount());
+                            if (operationRequest.getAmount() <= 0) {
+                                log.info(WalletLogs.WRONG_AMOUNT_VALUE.getLog(), operationRequest.getAmount());
                                 throw new WrongOperationMoneyAmount(WRONG_MONEY_AMOUNT.getMessage());
                             }
 
-                            if ("DEPOSIT".equals(operation.getOperationType().name())) {
-                                wallet.setMoney(wallet.getMoney() + operation.getAmount());
+                            if ("DEPOSIT".equals(operationRequest.getOperationType().name())) {
+                                wallet.setMoney(wallet.getMoney() + operationRequest.getAmount());
                                 this.walletRepository.save(wallet);
-                                this.operationRepository.save(operation);
+                                this.operationRepository.save(this.operationMapper.toEntity(operationRequest));
                                 log.info(DEPOSIT_SUCCESS.getMessage());
                                 return DEPOSIT_SUCCESS.getMessage();
 
                             } else if (
-                                    "WITHDRAW".equals(operation.getOperationType().name()) &&
-                                    operation.getAmount() < wallet.getMoney()
+                                    "WITHDRAW".equals(operationRequest.getOperationType().name()) &&
+                                    operationRequest.getAmount() < wallet.getMoney()
                             ) {
-                                wallet.setMoney(wallet.getMoney() - operation.getAmount());
+                                wallet.setMoney(wallet.getMoney() - operationRequest.getAmount());
                                 this.walletRepository.save(wallet);
-                                this.operationRepository.save(operation);
+                                this.operationRepository.save(this.operationMapper.toEntity(operationRequest));
                                 log.info(WITHDRAW_SUCCESS.getMessage());
                                 return WITHDRAW_SUCCESS.getMessage();
 
@@ -85,7 +91,7 @@ public class OperationService {
                 .findFirst()
                 .orElseThrow(
                         () -> new WalletNotFoundException(
-                                format(WALLET_NOT_FOUND.getMessage(), operation.getWalletId())
+                                format(WALLET_NOT_FOUND.getMessage(), operationRequest.getWalletId())
                         )
                 );
     }

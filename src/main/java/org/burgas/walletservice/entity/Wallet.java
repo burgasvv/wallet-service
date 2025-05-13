@@ -11,7 +11,7 @@ import java.util.UUID;
 import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
-public final class Wallet implements Serializable {
+public final class Wallet extends AbstractEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = UUID)

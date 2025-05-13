@@ -1,6 +1,7 @@
 package org.burgas.walletservice.controller;
 
-import org.burgas.walletservice.entity.Operation;
+import org.burgas.walletservice.dto.OperationRequest;
+import org.burgas.walletservice.dto.OperationResponse;
 import org.burgas.walletservice.service.OperationService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class OperationController {
     }
 
     @GetMapping(value = "/by-wallet")
-    public ResponseEntity<List<Operation>> getOperationsByWallet(@RequestParam UUID walletId) {
+    public ResponseEntity<List<OperationResponse>> getOperationsByWallet(@RequestParam UUID walletId) {
         return ResponseEntity
                 .status(OK)
                 .contentType(APPLICATION_JSON)
@@ -33,10 +34,10 @@ public class OperationController {
     }
 
     @PostMapping(value = "/perform")
-    public ResponseEntity<String> performOperation(@RequestBody Operation operation) {
+    public ResponseEntity<String> performOperation(@RequestBody OperationRequest operationRequest) {
         return ResponseEntity
                 .status(OK)
                 .contentType(new MediaType(TEXT_PLAIN, UTF_8))
-                .body(this.operationService.performOperation(operation));
+                .body(this.operationService.performOperation(operationRequest));
     }
 }
