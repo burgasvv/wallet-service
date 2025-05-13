@@ -1,17 +1,14 @@
 package org.burgas.walletservice.handler;
 
-import org.burgas.walletservice.exception.NotEnoughMoneyException;
-import org.burgas.walletservice.exception.WalletNotFoundException;
-import org.burgas.walletservice.exception.WalletWrongAmountException;
-import org.burgas.walletservice.exception.WrongOperationMoneyAmount;
+import org.burgas.walletservice.exception.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 
 @RestControllerAdvice
@@ -41,10 +38,26 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler(WrongOperationMoneyAmount.class)
-    public ResponseEntity<String> handleWrongOperationMoneyAmount(final WrongOperationMoneyAmount exception) {
+    @ExceptionHandler(WrongOperationMoneyAmountException.class)
+    public ResponseEntity<String> handleWrongOperationMoneyAmount(final WrongOperationMoneyAmountException exception) {
         return ResponseEntity
                 .status(NOT_ACCEPTABLE)
+                .contentType(new MediaType(TEXT_PLAIN, UTF_8))
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler(WrongOperationTypeException.class)
+    public ResponseEntity<String> handleWrongOperationTypeException(final WrongOperationTypeException exception) {
+        return ResponseEntity
+                .status(NOT_ACCEPTABLE)
+                .contentType(new MediaType(TEXT_PLAIN, UTF_8))
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleHttpMessageNotReadableException(final HttpMessageNotReadableException exception) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
                 .contentType(new MediaType(TEXT_PLAIN, UTF_8))
                 .body(exception.getMessage());
     }

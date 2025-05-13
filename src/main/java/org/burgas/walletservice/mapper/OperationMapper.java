@@ -13,7 +13,6 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 @Component
 public final class OperationMapper implements MapperDataHandler<OperationRequest, Operation, OperationResponse> {
 
-
     @Override
     public Operation toEntity(OperationRequest operationRequest) {
         return Operation.builder()

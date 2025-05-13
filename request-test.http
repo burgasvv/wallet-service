@@ -4,7 +4,7 @@ POST /api/v1/wallets/create
 Host: localhost:9000
 
 ### Получение информации по идентификатору кошелька
-GET /api/v1/wallets/132d5abf-b3ce-4658-87de-c245e801aeb1
+GET /api/v1/wallets/1d2260e2-a52e-4225-80f4-711329b8c170
 Host: localhost:9000
 
 ### Выполнение операции внесения и выведения денежных средств с кошелька
@@ -13,11 +13,11 @@ Host: localhost:9000
 Content-Type: application/json
 
 {
-    "walletId": "132d5abf-b3ce-4658-87de-c245e801aeb1",
-    "amount": 2000,
+    "walletId": "1d2260e2-a52e-4225-80f4-711329b8c170",
+    "amount": 4000,
     "operationType": "DEPOSIT"
 }
 
 ### Получение списка произведенных операций по идентификатору кошелька
-GET /api/v1/operations/by-wallet?walletId=132d5abf-b3ce-4658-87de-c245e801aeb1
+GET /api/v1/operations/by-wallet?walletId=1d2260e2-a52e-4225-80f4-711329b8c170
 Host: localhost:9000

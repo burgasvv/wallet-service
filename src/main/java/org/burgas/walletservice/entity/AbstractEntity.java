@@ -1,4 +1,4 @@
 package org.burgas.walletservice.entity;
 
-public abstract class AbstractEntity {
+public abstract sealed class AbstractEntity permits Wallet, Operation {
 }

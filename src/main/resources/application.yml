@@ -4,15 +4,17 @@ server:
 spring:
   application:
     name: wallet-service
+  liquibase:
+    enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/wallet_service_db
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: none
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
