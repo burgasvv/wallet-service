@@ -1,5 +1,6 @@
 
 services:
+
   postgres:
     image: postgres:latest
     container_name: wallet_service_postgres
@@ -8,5 +9,17 @@ services:
     environment:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DATABASE: wallet_service_db
+      POSTGRES_DB: wallet_service_db
       PGDATA: /var/lib/data/postgresql
+
+  wallet-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/wallet_service_db

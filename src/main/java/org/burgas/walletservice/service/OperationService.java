@@ -4,6 +4,7 @@ import org.burgas.walletservice.entity.Operation;
 import org.burgas.walletservice.exception.NotEnoughMoneyException;
 import org.burgas.walletservice.exception.WalletNotFoundException;
 import org.burgas.walletservice.exception.WrongOperationMoneyAmount;
+import org.burgas.walletservice.log.WalletLogs;
 import org.burgas.walletservice.repository.OperationRepository;
 import org.burgas.walletservice.repository.WalletRepository;
 import org.slf4j.Logger;
@@ -55,6 +56,7 @@ public class OperationService {
                 .map(
                         wallet -> {
                             if (operation.getAmount() <= 0) {
+                                log.info(WalletLogs.WRONG_AMOUNT_VALUE.getLog(), operation.getAmount());
                                 throw new WrongOperationMoneyAmount(WRONG_MONEY_AMOUNT.getMessage());
                             }
 
@@ -62,6 +64,7 @@ public class OperationService {
                                 wallet.setMoney(wallet.getMoney() + operation.getAmount());
                                 this.walletRepository.save(wallet);
                                 this.operationRepository.save(operation);
+                                log.info(DEPOSIT_SUCCESS.getMessage());
                                 return DEPOSIT_SUCCESS.getMessage();
 
                             } else if (
@@ -71,6 +74,7 @@ public class OperationService {
                                 wallet.setMoney(wallet.getMoney() - operation.getAmount());
                                 this.walletRepository.save(wallet);
                                 this.operationRepository.save(operation);
+                                log.info(WITHDRAW_SUCCESS.getMessage());
                                 return WITHDRAW_SUCCESS.getMessage();
 
                             } else {

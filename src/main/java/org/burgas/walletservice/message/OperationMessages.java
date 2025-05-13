@@ -5,7 +5,7 @@ public enum OperationMessages {
     DEPOSIT_SUCCESS("Операция DEPOSIT выполнена успешно"),
     WITHDRAW_SUCCESS("Операция WITHDRAW выполнена успешно"),
     NOT_ENOUGH_MONEY("Недостаточно средств для завершения операции"),
-    WRONG_MONEY_AMOUNT("Введенное денежное количество неверно");
+    WRONG_MONEY_AMOUNT("Введенное денежное числовое значение неверно");
 
     private final String message;
 
