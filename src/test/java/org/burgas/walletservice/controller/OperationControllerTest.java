@@ -66,9 +66,7 @@ class OperationControllerTest {
     @Order(value = 2)
     void performOperation() throws Exception {
         String id = getId();
-        System.out.println(id);
         String operation = "{\"walletId\":\"" + id + "\", \"amount\":1000, \"operationType\":\"DEPOSIT\"}";
-        System.out.println(operation);
         this.mockMvc
                 .perform(
                         MockMvcRequestBuilders.post("/api/v1/operations/perform")
