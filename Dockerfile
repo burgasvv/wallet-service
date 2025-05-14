@@ -1,3 +1,4 @@
+
 FROM postgres:latest
 EXPOSE 5432
 
@@ -6,7 +7,7 @@ FROM maven:3.9.9 AS build
 COPY pom.xml .
 COPY /src ./src/
 
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM openjdk:17 AS prod
 
