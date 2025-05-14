@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.concurrent.ExecutionException;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
@@ -68,6 +70,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException exception) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .contentType(new MediaType(TEXT_PLAIN, UTF_8))
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler(ExecutionException.class)
+    public ResponseEntity<String> handleExecutionException(final ExecutionException exception) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .contentType(new MediaType(TEXT_PLAIN, UTF_8))
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler(InterruptedException.class)
+    public ResponseEntity<String> handleInterruptedException(final InterruptedException exception) {
         return ResponseEntity
                 .status(BAD_REQUEST)
                 .contentType(new MediaType(TEXT_PLAIN, UTF_8))

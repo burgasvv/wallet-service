@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.HttpStatus.OK;
@@ -34,10 +35,10 @@ public class OperationController {
     }
 
     @PostMapping(value = "/perform")
-    public ResponseEntity<String> performOperation(@RequestBody OperationRequest operationRequest) {
+    public ResponseEntity<String> performOperation(@RequestBody OperationRequest operationRequest) throws ExecutionException, InterruptedException {
         return ResponseEntity
                 .status(OK)
                 .contentType(new MediaType(TEXT_PLAIN, UTF_8))
-                .body(this.operationService.performOperation(operationRequest));
+                .body(this.operationService.performOperation(operationRequest).get());
     }
 }
