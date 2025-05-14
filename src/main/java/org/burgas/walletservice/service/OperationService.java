@@ -59,7 +59,7 @@ public class OperationService {
      */
     public List<OperationResponse> findByWalletId(final UUID walletId) {
         return this.operationRepository.findOperationsByWalletId(walletId)
-                .stream()
+                .parallelStream()
                 .peek(operation -> log.info(OPERATION_FOUND_BY_WALLET_ID.getLog(), operation))
                 .map(this.operationMapper::toResponse)
                 .collect(Collectors.toList());

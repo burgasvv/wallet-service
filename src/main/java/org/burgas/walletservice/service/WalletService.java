@@ -43,6 +43,7 @@ public class WalletService {
     public Wallet findById(final UUID walletId) {
         return this.walletRepository.findById(walletId)
                 .stream()
+                .parallel()
                 .peek(wallet -> log.info(WALLET_FOUND_BY_ID.getLog(), wallet))
                 .findFirst()
                 .orElseThrow(
