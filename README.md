@@ -2,7 +2,7 @@
 # Приложение Wallet Service
 
 ###  Версии
-- [X] JDK 24
+- [X] JDK 17
 - [X] SpringBoot 3.3.5
 - [X] Postgres latest
 - [X] Maven 3.9.9
