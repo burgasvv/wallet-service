@@ -20,6 +20,9 @@ import static org.springframework.transaction.annotation.Isolation.READ_COMMITTE
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.SUPPORTS;
 
+/**
+ * Класс для работы с методами кошелька
+ */
 @Service
 @Transactional(readOnly = true, propagation = SUPPORTS)
 public class WalletService {
@@ -31,6 +34,12 @@ public class WalletService {
         this.walletRepository = walletRepository;
     }
 
+    /**
+     * Метод получения кошелька по его идентификатору
+     *
+     * @param walletId идентификатор кошелька
+     * @return Полученный объект кошелька
+     */
     public Wallet findById(final UUID walletId) {
         return this.walletRepository.findById(walletId)
                 .stream()
@@ -41,6 +50,13 @@ public class WalletService {
                 );
     }
 
+
+    /**
+     * Метод создания кошелька и сохранения его в базе
+     *
+     * @param money стартовое денежное значение (необязательное)
+     * @return Полученный объект кошелька
+     */
     @Transactional(
             isolation = READ_COMMITTED, propagation = REQUIRED,
             rollbackFor = Exception.class

@@ -1,5 +1,9 @@
 package org.burgas.walletservice.message;
 
+/**
+ * Класс - перечисление, содержащий объекты с сообщениями об операциях,
+ * полученных в исключениях и в качестве возвращаемого значения метода
+ */
 public enum OperationMessages {
 
     WRONG_OPERATION_TYPE("Введенная операция не существует"),

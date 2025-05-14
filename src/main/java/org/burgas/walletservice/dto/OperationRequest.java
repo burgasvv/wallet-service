@@ -5,6 +5,9 @@ import org.burgas.walletservice.entity.OperationType;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Класс для передачи данных запроса об операции
+ */
 public final class OperationRequest extends Request {
 
     private final UUID walletId;

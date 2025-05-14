@@ -1,5 +1,8 @@
 package org.burgas.walletservice.log;
 
+/**
+ * Класс - перечисление, содержащий объекты с сообщениями об операциях для логирования
+ */
 public enum OperationLogs {
 
     OPERATION_FOUND_BY_WALLET_ID("Операция была найдена по идентификатору кошелька: {}");

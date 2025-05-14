@@ -30,6 +30,9 @@ import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.SUPPORTS;
 
+/**
+ * Сервис для работы с методами операций
+ */
 @Service
 @Transactional(readOnly = true, propagation = SUPPORTS)
 public class OperationService {
@@ -45,6 +48,12 @@ public class OperationService {
         this.walletRepository = walletRepository;
     }
 
+    /**
+     * Метод получения списка операций, совершенных с данным кошельком
+     *
+     * @param walletId идентификатор кошелька
+     * @return список операций
+     */
     public List<OperationResponse> findByWalletId(final UUID walletId) {
         return this.operationRepository.findOperationsByWalletId(walletId)
                 .stream()
@@ -53,6 +62,12 @@ public class OperationService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Метод выполнения запроса выбранной операции с указанным кошельком
+     *
+     * @param operationRequest запрос операции
+     * @return Уведомление о выполнении операции
+     */
     @Transactional(
             isolation = SERIALIZABLE, propagation = REQUIRED,
             rollbackFor = Exception.class

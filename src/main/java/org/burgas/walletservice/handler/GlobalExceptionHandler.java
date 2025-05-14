@@ -11,6 +11,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 
+/**
+ * Класс обработки исключений
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

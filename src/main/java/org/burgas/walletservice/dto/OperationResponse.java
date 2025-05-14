@@ -4,6 +4,9 @@ import org.burgas.walletservice.entity.OperationType;
 
 import java.util.UUID;
 
+/**
+ * Класс для получения ответа об операции
+ */
 @SuppressWarnings("ALL")
 public final class OperationResponse extends Response {
 
